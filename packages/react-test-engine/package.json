@@ -1,0 +1,60 @@
+{
+  "name": "react-test-engine",
+  "version": "1.0.0",
+  "description": "Unit test utils for react components",
+  "repository": "git@github.com:vtaits/react-test-engine.git",
+  "license": "MIT",
+  "author": "Vadim Taits",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --sourcemap --format esm,cjs --dts --legacy-output",
+    "lint": "biome check src",
+    "lint:fix": "biome check src --apply-unsafe",
+    "format": "biome format src --write",
+    "test:ts": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test": "yarn lint && yarn test:ts && yarn test:unit"
+  },
+  "keywords": [
+    "react",
+    "test",
+    "engine",
+    "unit",
+    "shallow"
+  ],
+  "peerDependencies": {
+    "react-test-renderer": "^17.0.0 || ^18.0.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-is": "^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.2.2",
+    "@types/lodash": "^4.14.199",
+    "@types/react": "^18.2.25",
+    "@types/react-is": "^18.2.2",
+    "react": "^18.2.0",
+    "react-is": "^18.2.0",
+    "react-test-renderer": "^18.2.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "@types/react-test-renderer": "^18.0.3",
+    "lodash": "^4.17.21",
+    "react-shallow-search": "^2.2.0"
+  }
+}
