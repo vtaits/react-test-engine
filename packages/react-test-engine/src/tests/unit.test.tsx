@@ -1,4 +1,4 @@
-import { type ReactElement, useCallback } from "react";
+import { type MouseEvent, type ReactElement, useCallback } from "react";
 import type { QueryType } from "react-shallow-search";
 import { expect, test, vi } from "vitest";
 import { create } from "..";
@@ -71,7 +71,12 @@ test("should call callback", () => {
 		callback,
 	});
 
-	const result = page.getCallback("targetButton", "onClick")();
+	const event = {};
+
+	const result = page.getCallback(
+		"targetButton",
+		"onClick",
+	)(event as MouseEvent<HTMLButtonElement>);
 
 	expect(result).toBe(3);
 

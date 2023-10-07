@@ -9,71 +9,79 @@ import {
 import { createRenderer } from "react-test-renderer/shallow";
 
 type AccessorParamsType<
+	// biome-ignore lint/suspicious/noExplicitAny: supports any component
 	Component extends keyof JSX.IntrinsicElements | ComponentType<any>,
 > = QueryType<Component> | [QueryType<Component>, ParamsType<Component>];
 
 type Options<
-	QueryKey extends string,
 	Queries extends Record<
-		QueryKey,
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 > = {
 	queries: {
-		[key in QueryKey]: AccessorParamsType<Queries[QueryKey]>;
+		[Key in keyof Queries]: AccessorParamsType<Queries[Key]>;
 	};
 };
 
 type EngineType<
-	QueryKey extends string,
 	Queries extends Record<
-		QueryKey,
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 > = {
 	root: ReactElement | null | undefined;
 	checkIsRendered: () => boolean;
 	accessors: {
-		[key in QueryKey]: AccessorsType<Queries[QueryKey]>;
+		[Key in keyof Queries]: AccessorsType<Queries[Key]>;
 	};
-	getCallback: <Key extends QueryKey>(
+	getCallback: <
+		Key extends keyof Queries & string,
+		PropName extends keyof ComponentProps<Queries[Key]> & string,
+	>(
 		accessorKey: Key,
-		propName: keyof ComponentProps<Queries[Key]> & string,
-	) => Function & ComponentProps<Queries[QueryKey]>["propName"];
+		propName: PropName,
+		// biome-ignore lint/complexity/noBannedTypes: should return a function
+	) => Function & ComponentProps<Queries[Key]>[PropName];
 };
 
 export function create<
 	Props,
-	QueryKey extends string,
 	Queries extends Record<
-		QueryKey,
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 >(
 	Component: ComponentType<Props>,
 	defaultProps: Props,
-	options: Options<QueryKey, Queries>,
+	options: Options<Queries>,
 ) {
-	const render = (props: Partial<Props>): EngineType<QueryKey, Queries> => {
+	const render = (props: Partial<Props>): EngineType<Queries> => {
 		const renderer = createRenderer();
 
 		renderer.render(<Component {...defaultProps} {...props} />);
 
 		const root = renderer.getRenderOutput();
 
-		const accessors: {
-			[key in QueryKey]: AccessorsType<Queries[QueryKey]>;
-		} = mapValues(options.queries, (accessorsParams) => {
+		const accessors = mapValues(options.queries, (accessorsParams) => {
 			if (Array.isArray(accessorsParams)) {
 				return createAccessors(root, accessorsParams[0], accessorsParams[1]);
 			}
 
 			return createAccessors(root, accessorsParams);
-		});
+		}) as {
+			[Key in keyof Queries]: AccessorsType<Queries[Key]>;
+		};
 
-		const getCallback = <Key extends QueryKey>(
+		const getCallback = <
+			Key extends keyof Queries & string,
+			PropName extends keyof ComponentProps<Queries[Key]> & string,
+		>(
 			accessorKey: Key,
-			propName: keyof ComponentProps<Queries[Key]> & string,
+			propName: PropName,
 		) => {
 			const props = accessors[accessorKey].getProps();
 
