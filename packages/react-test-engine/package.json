@@ -36,9 +36,9 @@
     "shallow"
   ],
   "peerDependencies": {
-    "react-test-renderer": "^17.0.0 || ^18.0.0",
     "react": "^17.0.0 || ^18.0.0",
-    "react-is": "^17.0.0 || ^18.0.0"
+    "react-is": "^17.0.0 || ^18.0.0",
+    "react-test-renderer": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.2.2",
