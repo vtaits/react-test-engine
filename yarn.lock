@@ -2224,6 +2224,10 @@ __metadata:
     tsup: ^7.2.0
     typescript: ^5.2.2
     vitest: ^0.34.6
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-is: ^17.0.0 || ^18.0.0
+    react-test-renderer: ^17.0.0 || ^18.0.0
   languageName: unknown
   linkType: soft
 
