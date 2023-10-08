@@ -4,7 +4,7 @@ import { expect, test, vi } from "vitest";
 import { create } from "..";
 
 type Props = {
-	callback: (foo: number, bar: string) => [number, string];
+	callback: (foo: number, bar: string) => number;
 	children?: string;
 	isRender: boolean;
 };
