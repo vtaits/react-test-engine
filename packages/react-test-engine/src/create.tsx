@@ -1,52 +1,8 @@
 import mapValues from "lodash/mapValues";
-import type { ComponentProps, ComponentType, ReactElement } from "react";
-import {
-	type AccessorsType,
-	type ParamsType,
-	type QueryType,
-	createAccessors,
-} from "react-shallow-search";
+import type { ComponentType } from "react";
+import { type AccessorsType, createAccessors } from "react-shallow-search";
 import { createRenderer } from "react-test-renderer/shallow";
-
-type AccessorParamsType<
-	// biome-ignore lint/suspicious/noExplicitAny: supports any component
-	Component extends keyof JSX.IntrinsicElements | ComponentType<any>,
-> = QueryType<Component> | [QueryType<Component>, ParamsType<Component>];
-
-type Options<
-	Queries extends Record<
-		string,
-		// biome-ignore lint/suspicious/noExplicitAny: supports any component
-		keyof JSX.IntrinsicElements | ComponentType<any>
-	>,
-	Callbacks extends Record<string, [keyof Queries, string]>,
-> = {
-	queries: {
-		[Key in keyof Queries]: AccessorParamsType<Queries[Key]>;
-	};
-	callbacks?: {
-		[Key in keyof Callbacks & string]: [Callbacks[Key][0], Callbacks[Key][1]];
-	};
-};
-
-type EngineType<
-	Queries extends Record<
-		string,
-		// biome-ignore lint/suspicious/noExplicitAny: supports any component
-		keyof JSX.IntrinsicElements | ComponentType<any>
-	>,
-	Callbacks extends Record<string, [keyof Queries & string, string]>,
-> = {
-	root: ReactElement | null | undefined;
-	checkIsRendered: () => boolean;
-	accessors: {
-		[Key in keyof Queries]: AccessorsType<Queries[Key]>;
-	};
-	getCallback: <Key extends keyof Callbacks & string,>(
-		callbackKey: Key,
-		// biome-ignore lint/complexity/noBannedTypes: should return a function
-	) => Function & ComponentProps<Queries[Callbacks[Key][0]]>[Callbacks[Key][1]];
-};
+import type { EngineType, OptionsType } from "./types";
 
 export function create<
 	Props,
@@ -59,7 +15,7 @@ export function create<
 >(
 	Component: ComponentType<Props>,
 	defaultProps: Props,
-	{ queries, callbacks }: Options<Queries, Callbacks>,
+	{ queries, callbacks }: OptionsType<Queries, Callbacks>,
 ) {
 	const render = (props: Partial<Props>): EngineType<Queries, Callbacks> => {
 		const renderer = createRenderer();
@@ -78,7 +34,7 @@ export function create<
 			[Key in keyof Queries]: AccessorsType<Queries[Key]>;
 		};
 
-		const getCallback = <Key extends keyof Callbacks & string,>(
+		const getCallback = <Key extends keyof Callbacks & string>(
 			callbackKey: Key,
 		) => {
 			if (!callbacks) {

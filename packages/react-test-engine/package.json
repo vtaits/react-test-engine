@@ -24,7 +24,7 @@
     "lint:fix": "biome check src --apply-unsafe",
     "format": "biome format src --write",
     "test:ts": "tsc --noEmit",
-    "test:unit": "vitest run",
+    "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
     "test": "yarn lint && yarn test:ts && yarn test:unit"
   },
@@ -45,6 +45,8 @@
     "@types/lodash": "^4.14.199",
     "@types/react": "^18.2.25",
     "@types/react-is": "^18.2.2",
+    "@types/react-test-renderer": "^18.0.3",
+    "@vitest/coverage-v8": "^0.34.6",
     "react": "^18.2.0",
     "react-is": "^18.2.0",
     "react-test-renderer": "^18.2.0",
@@ -53,7 +55,6 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "@types/react-test-renderer": "^18.0.3",
     "lodash": "^4.17.21",
     "react-shallow-search": "^2.2.0"
   }
