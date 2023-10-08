@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Unit test utils for react components",
   "repository": "git@github.com:vtaits/react-test-engine.git",
+  "homepage": "https://vtaits.github.io/react-test-engine/",
   "license": "MIT",
   "author": "Vadim Taits",
   "files": [

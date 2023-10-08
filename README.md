@@ -49,7 +49,7 @@ const defaultProps: Props = {
 };
 ```
 
-Then let's describe accsessors of our components. In this case, only `button` is needed. Let's call it "targetButton"
+Then let's describe accsessors of rendered components. In this case, only `button` is needed. Let's call it "targetButton"
 
 ```tsx
 import { create } from "react-test-engine";
@@ -64,7 +64,7 @@ const render = create(Component, defaultProps, {
 });
 ```
 
-A boilerplate is ready. Let's write a test that checks for correct render of children
+A boilerplate is ready. Let's write a test that checks for the correct render of the children
 
 ```tsx
 import { expect, test } from "vitest";
@@ -74,17 +74,17 @@ test("should render children correctly", () => {
     children: "Children for our test",
   });
 
-  expect(engine.accessors.targetButton.getProps()).toBe(children);
+  expect(engine.accessors.targetButton.getProps()).toBe("Children for our test");
 });
 ```
 
-Here is used a method `getProps`, but you can use other methods. Full list:
+A method `getProps` is used here, but you can use other methods. The full list:
 
-- `get` - get an element or throw an error if element is not found of there are more than one element by curreny query;
-- `getProps` - get props of the element or throw an error if element is not found of there are more than one element by curreny query;
-- `getAll` - get array of all mathed elements or throw an error if there are not elements for curreny query;
-- `query` - get an element or return null if element is not found or throw an error if there are no matched elements for curreny query;
-- `queryAll` - get array of all mathed elements.
+- `get` - returns an element or throw an error if element is not found or there are more than one element for curreny query;
+- `getProps` - returns props of the element or throw an error if element is not found or there are more than one element for curreny query;
+- `getAll` - returns array of all matched elements or throw an error if there are no elements for curreny query;
+- `query` - returns an element or `null` if element is not found or throw an error if there are no matched elements for curreny query;
+- `queryAll` - returns array of all matched elements.
 
 [react-shallow-search](https://github.com/vtaits/react-shallow-search) is used.
 
@@ -101,22 +101,22 @@ const render = create(Component, defaultProps, {
     },
   },
   // !!!!!!!!!!!!!!!
-  // ADDED `callbacks` section
+  // ADDED `callbacks` SECTION
   callbacks: {
     onClickTarget: ["targetButton", "onClick"],
   },
 });
 ```
 
-The first value of the tupple is a key of `queries`. The second value is the key of props
+The first value of the tupple is the key of `queries`. The second value is the key of props
 
-Let's write a test for the callback;
+Let's write a test for the callback:
 
 ```tsx
 import type { MouseEvent } from "react";
 import { expect, test, vi } from "vitest";
 
-test("should call the callback correctly", () => {
+test("should call callback correctly", () => {
 	const callback = vi.fn();
 
 	const page = setup({
