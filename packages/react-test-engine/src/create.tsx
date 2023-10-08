@@ -19,9 +19,13 @@ type Options<
 		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
+	Callbacks extends Record<string, [keyof Queries, string]>,
 > = {
 	queries: {
 		[Key in keyof Queries]: AccessorParamsType<Queries[Key]>;
+	};
+	callbacks?: {
+		[Key in keyof Callbacks & string]: [Callbacks[Key][0], Callbacks[Key][1]];
 	};
 };
 
@@ -31,20 +35,17 @@ type EngineType<
 		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
+	Callbacks extends Record<string, [keyof Queries & string, string]>,
 > = {
 	root: ReactElement | null | undefined;
 	checkIsRendered: () => boolean;
 	accessors: {
 		[Key in keyof Queries]: AccessorsType<Queries[Key]>;
 	};
-	getCallback: <
-		Key extends keyof Queries & string,
-		PropName extends keyof ComponentProps<Queries[Key]> & string,
-	>(
-		accessorKey: Key,
-		propName: PropName,
+	getCallback: <Key extends keyof Callbacks & string,>(
+		callbackKey: Key,
 		// biome-ignore lint/complexity/noBannedTypes: should return a function
-	) => Function & ComponentProps<Queries[Key]>[PropName];
+	) => Function & ComponentProps<Queries[Callbacks[Key][0]]>[Callbacks[Key][1]];
 };
 
 export function create<
@@ -54,19 +55,20 @@ export function create<
 		// biome-ignore lint/suspicious/noExplicitAny: supports any component
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
+	Callbacks extends Record<string, [keyof Queries & string, string]>,
 >(
 	Component: ComponentType<Props>,
 	defaultProps: Props,
-	options: Options<Queries>,
+	{ queries, callbacks }: Options<Queries, Callbacks>,
 ) {
-	const render = (props: Partial<Props>): EngineType<Queries> => {
+	const render = (props: Partial<Props>): EngineType<Queries, Callbacks> => {
 		const renderer = createRenderer();
 
 		renderer.render(<Component {...defaultProps} {...props} />);
 
 		const root = renderer.getRenderOutput();
 
-		const accessors = mapValues(options.queries, (accessorsParams) => {
+		const accessors = mapValues(queries, (accessorsParams) => {
 			if (Array.isArray(accessorsParams)) {
 				return createAccessors(root, accessorsParams[0], accessorsParams[1]);
 			}
@@ -76,13 +78,14 @@ export function create<
 			[Key in keyof Queries]: AccessorsType<Queries[Key]>;
 		};
 
-		const getCallback = <
-			Key extends keyof Queries & string,
-			PropName extends keyof ComponentProps<Queries[Key]> & string,
-		>(
-			accessorKey: Key,
-			propName: PropName,
+		const getCallback = <Key extends keyof Callbacks & string,>(
+			callbackKey: Key,
 		) => {
+			if (!callbacks) {
+				throw new Error("`callbacks` option is not setted");
+			}
+
+			const [accessorKey, propName] = callbacks[callbackKey];
 			const props = accessors[accessorKey].getProps();
 
 			const callback = props[propName];

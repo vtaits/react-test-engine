@@ -45,6 +45,9 @@ const setup = create(
 				component: "button",
 			} as QueryType<"button">,
 		},
+		callbacks: {
+			onClickTarget: ["targetButton", "onClick"],
+		},
 	},
 );
 
@@ -73,10 +76,9 @@ test("should call callback", () => {
 
 	const event = {};
 
-	const result = page.getCallback(
-		"targetButton",
-		"onClick",
-	)(event as MouseEvent<HTMLButtonElement>);
+	const result = page.getCallback("onClickTarget")(
+		event as MouseEvent<HTMLButtonElement>,
+	);
 
 	expect(result).toBe(3);
 
