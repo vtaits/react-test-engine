@@ -4,6 +4,13 @@ import { type AccessorsType, createAccessors } from "react-shallow-search";
 import { createRenderer } from "react-test-renderer/shallow";
 import type { EngineType, OptionsType } from "./types";
 
+/**
+ * Creates engine for unit-testing of react component
+ * @param Component target component
+ * @param defaultProps stubs for required props
+ * @param options named accessors for rendered components and their callbacks
+ * @returns function that renders components and initializes accessors
+ */
 export function create<
 	Props,
 	Queries extends Record<
@@ -17,6 +24,11 @@ export function create<
 	defaultProps: Props,
 	{ queries, callbacks }: OptionsType<Queries, Callbacks>,
 ) {
+	/**
+	 * function that renders components and initializes accessors
+	 * @param props props of target component
+	 * @returns engine for unit-testing
+	 */
 	const render = (props: Partial<Props>): EngineType<Queries, Callbacks> => {
 		const renderer = createRenderer();
 

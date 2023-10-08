@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "build:docs": "typedoc packages/react-test-engine/src/index.ts"
+  },
   "workspaces": [
     "packages/*"
   ],
@@ -8,6 +11,7 @@
   "license": "MIT",
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
+    "typedoc": "^0.25.2",
     "typescript": "^5.2.2"
   }
 }
