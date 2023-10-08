@@ -27,7 +27,8 @@
     "test:ts": "tsc --noEmit",
     "test:unit": "vitest run --coverage.enabled --coverage.all --coverage.include=src",
     "test:unit:watch": "vitest",
-    "test": "yarn lint && yarn test:ts && yarn test:unit"
+    "test": "yarn lint && yarn test:ts && yarn test:unit",
+    "prepare": "yarn build"
   },
   "keywords": [
     "react",
