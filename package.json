@@ -1,7 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build:docs": "typedoc packages/react-test-engine/src/index.ts"
+    "upload:docs": "gh-pages -d docs",
+    "build:docs": "typedoc packages/react-test-engine/src/index.ts",
+    "deploy:docs": "yarn build:docs && yarn upload:docs"
   },
   "workspaces": [
     "packages/*"
@@ -11,6 +13,7 @@
   "license": "MIT",
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
+    "gh-pages": "^6.0.0",
     "typedoc": "^0.25.2",
     "typescript": "^5.2.2"
   }
