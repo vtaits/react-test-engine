@@ -13,7 +13,7 @@ Let's test a component. I'm using `vitest`, but you can use your favourite test 
 
 ```tsx
 import type {
-  ReactElement,
+	ReactElement,
 } from "react";
 
 type Props = {
@@ -45,7 +45,7 @@ At first, we have to define stubs for required props of the component
 import { vi } from "vitest";
 
 const defaultProps: Props = {
-  callback: vi.fn(),
+	callback: vi.fn(),
 };
 ```
 
@@ -55,12 +55,12 @@ Then let's describe accsessors of rendered components. In this case, only `butto
 import { create } from "react-test-engine";
 
 const render = create(Component, defaultProps, {
-  queries: {
-    targetButton: {
-      component: "button",
-      className: "my-button",
-    },
-  },
+	queries: {
+		targetButton: {
+			component: "button",
+			className: "my-button",
+		},
+	},
 });
 ```
 
@@ -70,11 +70,11 @@ A boilerplate is ready. Let's write a test that checks for the correct render of
 import { expect, test } from "vitest";
 
 test("should render children correctly", () => {
-  const engine = render({
-    children: "Children for our test",
-  });
+	const engine = render({
+		children: "Children for our test",
+	});
 
-  expect(engine.accessors.targetButton.getProps()).toBe("Children for our test");
+	expect(engine.accessors.targetButton.getProps().children).toBe("Children for our test");
 });
 ```
 
@@ -88,23 +88,60 @@ A method `getProps` is used here, but you can use other methods. The full list:
 
 [react-shallow-search](https://github.com/vtaits/react-shallow-search) is used.
 
+`engine.accessors.targetButton.getProps().children` is too long. We can simplify it:
+
+```tsx
+import { create } from "react-test-engine";
+
+const render = create(Component, defaultProps, {
+	queries: {
+		targetButton: {
+			component: "button",
+			className: "my-button",
+		},
+	},
+	// !!!!!!!!!!!!!!!
+	// ADDED `properties` SECTION
+	properties: {
+		targetChildren: ["targetButton", "children"],
+	},
+});
+```
+
+Then change a test:
+
+```tsx
+import { expect, test } from "vitest";
+
+test("should render children correctly", () => {
+	const engine = render({
+		children: "Children for our test",
+	});
+
+	expect(engine.getProperty("targetChildren")).toBe("Children for our test");
+});
+```
+
 Then let's test a callback. We can get it by props and check if this defined by ourselves, but there's an easy way. Let's change definition a little
 
 ```tsx
 import { create } from "react-test-engine";
 
 const render = create(Component, defaultProps, {
-  queries: {
-    targetButton: {
-      component: "button",
-      className: "my-button",
-    },
-  },
-  // !!!!!!!!!!!!!!!
-  // ADDED `callbacks` SECTION
-  callbacks: {
-    onClickTarget: ["targetButton", "onClick"],
-  },
+	queries: {
+		targetButton: {
+			component: "button",
+			className: "my-button",
+		},
+	},
+	properties: {
+		targetChildren: ["targetButton", "children"],
+	},
+	// !!!!!!!!!!!!!!!
+	// ADDED `callbacks` SECTION
+	callbacks: {
+		onClickTarget: ["targetButton", "onClick"],
+	},
 });
 ```
 

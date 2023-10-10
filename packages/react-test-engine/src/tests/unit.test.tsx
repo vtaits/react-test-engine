@@ -1,5 +1,4 @@
 import { type MouseEvent, type ReactElement, useCallback } from "react";
-import type { QueryType } from "react-shallow-search";
 import { expect, test, vi } from "vitest";
 import { create } from "..";
 
@@ -43,15 +42,18 @@ const setup = create(
 		queries: {
 			targetButton: {
 				component: "button",
-			} as QueryType<"button">,
+			},
 		},
 		callbacks: {
 			onClickTarget: ["targetButton", "onClick"],
 		},
+		properties: {
+			renderedChildren: ["targetButton", "children"],
+		},
 	},
 );
 
-test("should not render", () => {
+test("[checkIsRendered] should not render", () => {
 	const page = setup({
 		isRender: false,
 	});
@@ -59,7 +61,15 @@ test("should not render", () => {
 	expect(page.checkIsRendered()).toBe(false);
 });
 
-test("should render children", () => {
+test("[getProperty] should render children", () => {
+	const page = setup({
+		children: "Test children",
+	});
+
+	expect(page.getProperty("renderedChildren")).toBe("Test children");
+});
+
+test("[accessors] should render children", () => {
 	const page = setup({
 		children: "Test children",
 	});
@@ -67,7 +77,7 @@ test("should render children", () => {
 	expect(page.accessors.targetButton.getProps().children).toBe("Test children");
 });
 
-test("should call callback", () => {
+test("[getCallback] should call callback", () => {
 	const callback = vi.fn();
 
 	const page = setup({

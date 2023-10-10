@@ -8,7 +8,7 @@ import type { EngineType, OptionsType } from "./types";
  * Creates engine for unit-testing of react component
  * @param Component target component
  * @param defaultProps stubs for required props
- * @param options named accessors for rendered components and their callbacks
+ * @param options named accessors for rendered components and their props and callbacks
  * @returns function that renders components and initializes accessors
  */
 export function create<
@@ -19,17 +19,24 @@ export function create<
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 	Callbacks extends Record<string, [keyof Queries & string, string]>,
+	Properties extends Record<string, [keyof Queries, string]>,
 >(
 	Component: ComponentType<Props>,
 	defaultProps: Props,
-	{ queries, callbacks }: OptionsType<Queries, Callbacks>,
+	{
+		queries,
+		callbacks,
+		properties,
+	}: OptionsType<Queries, Callbacks, Properties>,
 ) {
 	/**
 	 * function that renders components and initializes accessors
 	 * @param props props of target component
 	 * @returns engine for unit-testing
 	 */
-	const render = (props: Partial<Props>): EngineType<Queries, Callbacks> => {
+	const render = (
+		props: Partial<Props>,
+	): EngineType<Queries, Callbacks, Properties> => {
 		const renderer = createRenderer();
 
 		renderer.render(<Component {...defaultProps} {...props} />);
@@ -67,11 +74,25 @@ export function create<
 			return callback;
 		};
 
+		const getProperty = <Key extends keyof Properties & string>(
+			propertyKey: Key,
+		) => {
+			if (!properties) {
+				throw new Error("`properties` option is not setted");
+			}
+
+			const [accessorKey, propName] = properties[propertyKey];
+			const props = accessors[accessorKey].getProps();
+
+			return props[propName];
+		};
+
 		return {
 			root,
 			checkIsRendered: () => Boolean(root),
 			accessors,
 			getCallback,
+			getProperty,
 		};
 	};
 

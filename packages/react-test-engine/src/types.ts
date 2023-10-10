@@ -37,6 +37,7 @@ export type OptionsType<
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 	Callbacks extends Record<string, [keyof Queries, string]>,
+	Properties extends Record<string, [keyof Queries, string]>,
 > = {
 	/**
 	 * An object whose values is queries to rendered elements, and keys can be used to access them
@@ -58,6 +59,34 @@ export type OptionsType<
 	 */
 	queries: {
 		[Key in keyof Queries]: AccessorParamsType<Queries[Key]>;
+	};
+	/**
+	 * And object whose values is tupples of keys of queries and names of props of components found by queries
+	 *
+	 * ```
+	 * const render = create(Component, defaultProps, {
+	 *   queries: {
+	 *     content: {
+	 *       component: 'div',
+	 *       className: 'foo',
+	 *     },
+	 *   },
+	 *
+	 *   properties: {
+	 *     contentChildren: ['content', 'children'],
+	 *   },
+	 * });
+	 *
+	 * const engine = render({});
+	 *
+	 * const contentChildren = page.getProperty('contentChildren');
+	 * ```
+	 */
+	properties?: {
+		[Key in keyof Properties & string]: [
+			Properties[Key][0],
+			Properties[Key][1],
+		];
 	};
 	/**
 	 * And object whose values is tupples of keys of queries and names of props that contains callbacks
@@ -93,6 +122,7 @@ export type EngineType<
 		keyof JSX.IntrinsicElements | ComponentType<any>
 	>,
 	Callbacks extends Record<string, [keyof Queries & string, string]>,
+	Properties extends Record<string, [keyof Queries, string]>,
 > = {
 	/**
 	 * Root node of rendered react tree
@@ -122,6 +152,33 @@ export type EngineType<
 	accessors: {
 		[Key in keyof Queries]: AccessorsType<Queries[Key]>;
 	};
+	/**
+	 * Get prop value from parameters by the key
+	 * @param propertyKey a key of the `properties` parameter
+	 * @returns value by paramteres of the `properties[propertyKey]`
+	 *
+	 * ```
+	 * const render = create(Component, defaultProps, {
+	 *   queries: {
+	 *     content: {
+	 *       component: 'div',
+	 *       className: 'foo',
+	 *     },
+	 *   },
+	 *
+	 *   properties: {
+	 *     contentChildren: ['content', 'children'],
+	 *   },
+	 * });
+	 *
+	 * const engine = render({});
+	 *
+	 * const contentChildren = page.getProperty('contentChildren');
+	 * ```
+	 */
+	getProperty: <Key extends keyof Properties & string,>(
+		propertyKey: Key,
+	) => ComponentProps<Queries[Properties[Key][0]]>[Properties[Key][1]];
 	/**
 	 * Get callback from parameters by the key
 	 * @param callbackKey a key of the `callbacks` parameter

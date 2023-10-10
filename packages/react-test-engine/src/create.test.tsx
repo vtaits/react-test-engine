@@ -251,3 +251,42 @@ describe("getCallback", () => {
 		}).toThrow();
 	});
 });
+
+describe("getProperty", () => {
+	test("should return value of the property", () => {
+		vi.mocked(accessors.getProps).mockReturnValue({
+			title: "Test",
+		});
+
+		const engine = create(TestComponent, defaultProps, {
+			queries: {
+				accessorKey: {},
+			},
+			properties: {
+				propertyKey: ["accessorKey", "title"],
+			},
+		});
+
+		const result = engine({});
+
+		expect(result.getProperty("propertyKey")).toBe("Test");
+	});
+
+	test("should throw an error if `properties` is not provided", () => {
+		vi.mocked(accessors.getProps).mockReturnValue({
+			title: "Test",
+		});
+
+		const engine = create(TestComponent, defaultProps, {
+			queries: {
+				accessorKey: {},
+			},
+		});
+
+		const result = engine({});
+
+		expect(() => {
+			result.getProperty("propertyKey");
+		}).toThrow();
+	});
+});
