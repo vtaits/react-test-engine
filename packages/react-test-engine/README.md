@@ -7,7 +7,12 @@ Unit test utils for react components
 
 [Api reference](https://vtaits.github.io/react-test-engine/)
 
-## Example
+## Examples
+
+- [Simple component](https://github.com/vtaits/react-test-engine/blob/main/packages/react-test-engine/src/tests/render.test.tsx)
+- [Component with hooks](https://github.com/vtaits/react-test-engine/blob/main/packages/react-test-engine/src/tests/hooks.test.tsx)
+
+## Quickstart
 
 Let's test a component. I'm using `vitest`, but you can use your favourite test framework
 
