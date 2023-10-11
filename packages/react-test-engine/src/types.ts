@@ -119,7 +119,7 @@ export type OptionsType<
 		[Key in keyof Callbacks & string]: [Callbacks[Key][0], Callbacks[Key][1]];
 	};
 	/**
-	 * An object whose values is hooks that called in currect component, and keys can be used to access them
+	 * An object whose values is hooks that called in current component, and keys can be used to access them
 	 *
 	 * ```
 	 * import { vi } from "vitest";
