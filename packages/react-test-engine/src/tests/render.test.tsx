@@ -32,7 +32,7 @@ function Component({
 	);
 }
 
-const setup = create(
+const render = create(
 	Component,
 	{
 		isRender: true,
@@ -54,39 +54,41 @@ const setup = create(
 );
 
 test("[checkIsRendered] should not render", () => {
-	const page = setup({
+	const engine = render({
 		isRender: false,
 	});
 
-	expect(page.checkIsRendered()).toBe(false);
+	expect(engine.checkIsRendered()).toBe(false);
 });
 
 test("[getProperty] should render children", () => {
-	const page = setup({
+	const engine = render({
 		children: "Test children",
 	});
 
-	expect(page.getProperty("renderedChildren")).toBe("Test children");
+	expect(engine.getProperty("renderedChildren")).toBe("Test children");
 });
 
 test("[accessors] should render children", () => {
-	const page = setup({
+	const engine = render({
 		children: "Test children",
 	});
 
-	expect(page.accessors.targetButton.getProps().children).toBe("Test children");
+	expect(engine.accessors.targetButton.getProps().children).toBe(
+		"Test children",
+	);
 });
 
 test("[getCallback] should call callback", () => {
 	const callback = vi.fn();
 
-	const page = setup({
+	const engine = render({
 		callback,
 	});
 
 	const event = {};
 
-	const result = page.getCallback("onClickTarget")(
+	const result = engine.getCallback("onClickTarget")(
 		event as MouseEvent<HTMLButtonElement>,
 	);
 
