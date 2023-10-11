@@ -2,6 +2,8 @@ import mapValues from "lodash/mapValues";
 import type { ComponentType } from "react";
 import { type AccessorsType, createAccessors } from "react-shallow-search";
 import { createRenderer } from "react-test-renderer/shallow";
+import { getMapHookKeyToLocalIndex } from "./getMapHookKeyToLocalIndex";
+import { mockHookValues } from "./mockHookValues";
 import type { EngineType, OptionsType } from "./types";
 
 /**
@@ -20,6 +22,11 @@ export function create<
 	>,
 	Callbacks extends Record<string, [keyof Queries & string, string]>,
 	Properties extends Record<string, [keyof Queries, string]>,
+	Hooks extends Record<
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
+		(...args: any) => any
+	>,
 >(
 	Component: ComponentType<Props>,
 	defaultProps: Props,
@@ -27,7 +34,12 @@ export function create<
 		queries,
 		callbacks,
 		properties,
-	}: OptionsType<Queries, Callbacks, Properties>,
+		hooks,
+		hookOrder,
+		hookDefaultValues = {},
+		mockFunctionValue,
+		getMockArguments,
+	}: OptionsType<Queries, Callbacks, Properties, Hooks>,
 ) {
 	/**
 	 * function that renders components and initializes accessors
@@ -36,7 +48,21 @@ export function create<
 	 */
 	const render = (
 		props: Partial<Props>,
-	): EngineType<Queries, Callbacks, Properties> => {
+		hookValues: Partial<{
+			[Key in keyof Hooks]: ReturnType<Hooks[Key]>;
+		}> = {},
+	): EngineType<Queries, Callbacks, Properties, Hooks> => {
+		const mapHookKeyToLocalIndex =
+			hooks && hookOrder ? getMapHookKeyToLocalIndex(hooks, hookOrder) : null;
+
+		mockHookValues(
+			hooks,
+			hookOrder,
+			hookDefaultValues,
+			hookValues,
+			mockFunctionValue,
+		);
+
 		const renderer = createRenderer();
 
 		renderer.render(<Component {...defaultProps} {...props} />);
@@ -87,11 +113,22 @@ export function create<
 			return props[propName];
 		};
 
+		const getHookArguments = <Key extends keyof Hooks>(hookKey: Key) => {
+			if (!hooks || !mapHookKeyToLocalIndex || !getMockArguments) {
+				throw new Error(
+					"Required parameters to initialize hooks: `hooks`, `hookOrder`, `mockFunctionValue`, `getMockArguments`",
+				);
+			}
+
+			return getMockArguments(hooks[hookKey], mapHookKeyToLocalIndex[hookKey]);
+		};
+
 		return {
 			root,
 			checkIsRendered: () => Boolean(root),
 			accessors,
 			getCallback,
+			getHookArguments,
 			getProperty,
 		};
 	};

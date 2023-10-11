@@ -38,6 +38,11 @@ export type OptionsType<
 	>,
 	Callbacks extends Record<string, [keyof Queries, string]>,
 	Properties extends Record<string, [keyof Queries, string]>,
+	Hooks extends Record<
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
+		(...args: any) => any
+	>,
 > = {
 	/**
 	 * An object whose values is queries to rendered elements, and keys can be used to access them
@@ -113,6 +118,21 @@ export type OptionsType<
 	callbacks?: {
 		[Key in keyof Callbacks & string]: [Callbacks[Key][0], Callbacks[Key][1]];
 	};
+	hooks?: Hooks;
+	hookOrder?: readonly (keyof Hooks)[];
+	hookDefaultValues?: Partial<{
+		[Key in keyof Hooks]: ReturnType<Hooks[Key]>;
+	}>;
+	// biome-ignore lint/suspicious/noExplicitAny: should extend Function
+	mockFunctionValue?: <Fn extends (...args: any) => any>(
+		fn: Fn,
+		value: unknown,
+	) => void;
+	// biome-ignore lint/suspicious/noExplicitAny: should extend Function
+	getMockArguments?: <Fn extends (...args: any) => any>(
+		fn: Fn,
+		callIndex: number,
+	) => Parameters<Fn>;
 };
 
 export type EngineType<
@@ -123,6 +143,11 @@ export type EngineType<
 	>,
 	Callbacks extends Record<string, [keyof Queries & string, string]>,
 	Properties extends Record<string, [keyof Queries, string]>,
+	Hooks extends Record<
+		string,
+		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
+		(...args: any) => any
+	>,
 > = {
 	/**
 	 * Root node of rendered react tree
@@ -209,4 +234,7 @@ export type EngineType<
 		callbackKey: Key,
 		// biome-ignore lint/complexity/noBannedTypes: should return a function
 	) => Function & ComponentProps<Queries[Callbacks[Key][0]]>[Callbacks[Key][1]];
+	getHookArguments: <Key extends keyof Hooks>(
+		hookKey: Key,
+	) => Parameters<Hooks[Key]>;
 };
