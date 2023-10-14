@@ -173,13 +173,13 @@ import { expect, test, vi } from "vitest";
 test("should call callback correctly", () => {
 	const callback = vi.fn();
 
-	const page = setup({
+	const engine = render({
 		callback,
 	});
 
 	const event = {};
 
-	page.getCallback("onClickTarget")(
+	engine.getCallback("onClickTarget")(
 		event as MouseEvent<HTMLButtonElement>,
 	);
 
