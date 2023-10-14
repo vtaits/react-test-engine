@@ -44,6 +44,7 @@ export function create<
 	/**
 	 * function that renders components and initializes accessors
 	 * @param props props of target component
+	 * @param hookValues values of hooks
 	 * @returns engine for unit-testing
 	 */
 	const render = (
