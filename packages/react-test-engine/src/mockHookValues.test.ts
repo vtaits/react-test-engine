@@ -16,30 +16,20 @@ describe("`hookOrder` is not defined", () => {
 describe("`hookOrder` is defined", () => {
 	test("should throw an error if `hooks` is not defined", () => {
 		expect(() => {
-			mockHookValues(undefined, [], undefined, undefined, undefined);
+			mockHookValues(undefined, [], {}, undefined, undefined);
 		}).toThrow();
 	});
 
-	test("should throw an error if `mockFunctionValue` is not defined", () => {
+	test("should throw an error if `hookDefaultValues` is not defined", () => {
 		expect(() => {
 			mockHookValues({}, [], undefined, undefined, undefined);
 		}).toThrow();
 	});
 
-	test("should not provide value if there is no value and no default value", () => {
-		const hook = vi.fn();
-
-		mockHookValues(
-			{
-				test: hook,
-			},
-			["test"],
-			undefined,
-			undefined,
-			mockFunctionValue,
-		);
-
-		expect(mockFunctionValue).toHaveBeenCalledTimes(0);
+	test("should throw an error if `mockFunctionValue` is not defined", () => {
+		expect(() => {
+			mockHookValues({}, [], {}, undefined, undefined);
+		}).toThrow();
 	});
 
 	test("should provide default value", () => {

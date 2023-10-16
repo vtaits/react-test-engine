@@ -36,7 +36,7 @@ export function create<
 		properties,
 		hooks,
 		hookOrder,
-		hookDefaultValues = {},
+		hookDefaultValues,
 		mockFunctionValue,
 		getMockArguments,
 	}: OptionsType<Queries, Callbacks, Properties, Hooks>,
@@ -117,7 +117,7 @@ export function create<
 		const getHookArguments = <Key extends keyof Hooks>(hookKey: Key) => {
 			if (!hooks || !mapHookKeyToLocalIndex || !getMockArguments) {
 				throw new Error(
-					"Required parameters to initialize hooks: `hooks`, `hookOrder`, `mockFunctionValue`, `getMockArguments`",
+					"Required parameters to initialize hooks: `hooks`, `hookDefaultValues`, `hookOrder`, `mockFunctionValue`, `getMockArguments`",
 				);
 			}
 

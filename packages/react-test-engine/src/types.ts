@@ -203,9 +203,9 @@ export type OptionsType<
 	 * });
 	 * ```
 	 */
-	hookDefaultValues?: Partial<{
+	hookDefaultValues?: {
 		[Key in keyof Hooks]: ReturnType<Hooks[Key]>;
-	}>;
+	};
 	/**
 	 * Mock function return using test engine
 	 * @param fn function for mock
