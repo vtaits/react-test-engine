@@ -88,7 +88,7 @@ export type OptionsType<
 	 * ```
 	 */
 	properties?: {
-		[Key in keyof Properties & string]: [
+		[Key in keyof Properties & string]: readonly [
 			Properties[Key][0],
 			Properties[Key][1],
 		];
@@ -116,7 +116,10 @@ export type OptionsType<
 	 * ```
 	 */
 	callbacks?: {
-		[Key in keyof Callbacks & string]: [Callbacks[Key][0], Callbacks[Key][1]];
+		[Key in keyof Callbacks & string]: readonly [
+			Callbacks[Key][0],
+			Callbacks[Key][1],
+		];
 	};
 	/**
 	 * An object whose values is hooks that called in current component, and keys can be used to access them
