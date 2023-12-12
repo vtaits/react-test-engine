@@ -1,6 +1,6 @@
 {
   "name": "react-test-engine-vitest",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Integration of react-test-engine and vitest",
   "repository": "git@github.com:vtaits/react-test-engine.git",
   "homepage": "https://vtaits.github.io/react-test-engine/",
