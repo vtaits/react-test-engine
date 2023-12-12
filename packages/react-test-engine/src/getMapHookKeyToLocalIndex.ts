@@ -43,7 +43,7 @@ export function getMapHookKeyToLocalIndex<
 	/**
 	 * Map hook keys to indexes of their mock calls
 	 */
-	hookOrder.forEach((hookKey) => {
+	for (const hookKey of hookOrder) {
 		const hook = hooks[hookKey];
 		const previousIndex = collectedHooks.get(hook);
 
@@ -54,7 +54,7 @@ export function getMapHookKeyToLocalIndex<
 			mapHookKeyToLocalIndex[hookKey] = previousIndex + 1;
 			collectedHooks.set(hook, previousIndex + 1);
 		}
-	});
+	}
 
 	return mapHookKeyToLocalIndex as Record<keyof Hooks, number>;
 }

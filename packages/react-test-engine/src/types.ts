@@ -319,7 +319,7 @@ export type EngineType<
 	 * const contentChildren = page.getProperty('contentChildren');
 	 * ```
 	 */
-	getProperty: <Key extends keyof Properties & string,>(
+	getProperty: <Key extends keyof Properties & string>(
 		propertyKey: Key,
 	) => ComponentProps<Queries[Properties[Key][0]]>[Properties[Key][1]];
 	/**
@@ -348,7 +348,7 @@ export type EngineType<
 	 * page.getCallback('onFooClick')({} as MouseEvent);
 	 * ```
 	 */
-	getCallback: <Key extends keyof Callbacks & string,>(
+	getCallback: <Key extends keyof Callbacks & string>(
 		callbackKey: Key,
 		// biome-ignore lint/complexity/noBannedTypes: should return a function
 	) => Function & ComponentProps<Queries[Callbacks[Key][0]]>[Callbacks[Key][1]];

@@ -38,17 +38,15 @@ export function mockHookValues<
 			);
 		}
 
-		hookOrder.forEach((hookKey) => {
+		for (const hookKey of hookOrder) {
 			const hook = hooks[hookKey];
 
 			if (Object.hasOwn(hookValues, hookKey)) {
 				mockFunctionValue(hook, hookValues[hookKey]);
-				return;
+			} else {
+				const hookDefaultValue = hookDefaultValues[hookKey];
+				mockFunctionValue(hook, hookDefaultValue);
 			}
-
-			const hookDefaultValue = hookDefaultValues[hookKey];
-
-			mockFunctionValue(hook, hookDefaultValue);
-		});
+		}
 	}
 }

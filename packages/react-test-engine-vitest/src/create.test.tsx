@@ -49,9 +49,9 @@ test("provide not changed options", () => {
 	expect(mockedCreate.mock.calls[0][0]).toBe(TestComponent);
 	expect(mockedCreate.mock.calls[0][1]).toBe(defaultProps);
 
-	Object.entries(options).forEach(([key, value]) => {
+	for (const [key, value] of Object.entries(options)) {
 		expect(mockedCreate.mock.calls[0][2]).toHaveProperty(key, value);
-	});
+	}
 });
 
 test("return a result of base `create`", () => {
