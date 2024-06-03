@@ -1,6 +1,6 @@
 {
   "name": "react-test-engine-vitest",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Integration of react-test-engine and vitest",
   "repository": "git@github.com:vtaits/react-test-engine.git",
   "homepage": "https://vtaits.github.io/react-test-engine/",
@@ -47,7 +47,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "react": "^18.3.1",
     "react-is": "^18.3.1",
-    "react-test-engine": "^1.1.1",
+    "react-test-engine": "^1.1.2",
     "react-test-renderer": "^18.3.1",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5",

@@ -2714,7 +2714,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^1.6.0"
     react: "npm:^18.3.1"
     react-is: "npm:^18.3.1"
-    react-test-engine: "npm:^1.1.1"
+    react-test-engine: "npm:^1.1.2"
     react-test-renderer: "npm:^18.3.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.4.5"
@@ -2728,7 +2728,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-test-engine@npm:^1.1.1, react-test-engine@workspace:packages/react-test-engine":
+"react-test-engine@npm:^1.1.2, react-test-engine@workspace:packages/react-test-engine":
   version: 0.0.0-use.local
   resolution: "react-test-engine@workspace:packages/react-test-engine"
   dependencies:
