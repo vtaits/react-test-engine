@@ -25,7 +25,7 @@ export function create<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 >(
 	Component: ComponentType<Props>,

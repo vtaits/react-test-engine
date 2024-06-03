@@ -433,7 +433,7 @@ describe("getHookArguments", () => {
 			const engine = create(TestComponent, defaultProps, {
 				queries: {},
 				hookOrder,
-				getMockArguments: vi.fn(),
+				getMockArguments: vi.fn().mockReturnValue([]),
 			});
 
 			const { getHookArguments } = engine({});
@@ -454,7 +454,7 @@ describe("getHookArguments", () => {
 					hook: vi.fn(),
 				},
 				hookOrder,
-				getMockArguments: vi.fn(),
+				getMockArguments: vi.fn().mockReturnValue([]),
 			});
 
 			const { getHookArguments } = engine({});

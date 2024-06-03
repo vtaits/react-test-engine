@@ -21,7 +21,7 @@ export function create<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 >(
 	Component: ComponentType<Props>,
@@ -39,7 +39,7 @@ export function create<
 		},
 
 		getMockArguments: (hook, callIndex) => {
-			return vi.mocked(hook).mock.calls[callIndex];
+			return vi.mocked(hook).mock.calls[callIndex] as Parameters<typeof hook>;
 		},
 	});
 }

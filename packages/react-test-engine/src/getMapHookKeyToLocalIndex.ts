@@ -34,7 +34,7 @@ export function getMapHookKeyToLocalIndex<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 >(hooks: Hooks, hookOrder: readonly (keyof Hooks)[]) {
 	const mapHookKeyToLocalIndex: Partial<Record<keyof Hooks, number>> = {};

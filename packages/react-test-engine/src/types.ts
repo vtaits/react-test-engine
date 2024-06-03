@@ -41,7 +41,7 @@ export type OptionsType<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 > = {
 	/**
@@ -226,7 +226,7 @@ export type OptionsType<
 	 * ```
 	 */
 	// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-	mockFunctionValue?: <Fn extends (...args: any) => any>(
+	mockFunctionValue?: <Fn extends (...args: any[]) => any>(
 		fn: Fn,
 		value: unknown,
 	) => void;
@@ -247,7 +247,7 @@ export type OptionsType<
 	 * ```
 	 */
 	// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-	getMockArguments?: <Fn extends (...args: any) => any>(
+	getMockArguments?: <Fn extends (...args: any[]) => any>(
 		fn: Fn,
 		callIndex: number,
 	) => Parameters<Fn>;
@@ -264,7 +264,7 @@ export type EngineType<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 > = {
 	/**

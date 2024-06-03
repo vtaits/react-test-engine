@@ -88,7 +88,7 @@ const render = create(
 		},
 
 		getMockArguments: (hook, callIndex) => {
-			return vi.mocked(hook).mock.calls[callIndex];
+			return vi.mocked(hook).mock.calls[callIndex] as Parameters<typeof hook>;
 		},
 	},
 );

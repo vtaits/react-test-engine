@@ -2,7 +2,7 @@ export function mockHookValues<
 	Hooks extends Record<
 		string,
 		// biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		(...args: any) => any
+		(...args: any[]) => any
 	>,
 >(
 	hooks: Hooks | undefined,
@@ -18,7 +18,7 @@ export function mockHookValues<
 		  }>
 		| undefined = {},
 	mockFunctionValue: // biome-ignore lint/suspicious/noExplicitAny: should extend Function
-		| (<Fn extends (...args: any) => any>(fn: Fn, value: unknown) => void)
+		| (<Fn extends (...args: any[]) => any>(fn: Fn, value: unknown) => void)
 		| undefined = undefined,
 ) {
 	if (hookOrder) {
